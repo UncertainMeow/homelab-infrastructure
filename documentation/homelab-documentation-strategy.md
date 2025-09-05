@@ -1,135 +1,132 @@
-# Homelab Documentation Strategy & Implementation Plan
+# Homelab Documentation Implementation Plan - Revised
 
-## Overview
-This document outlines the comprehensive documentation strategy for homelab infrastructure, focusing on security, version control, and progressive publication workflows.
+## Phase 1: GitHub Repository Setup (Start Here)
 
-## Core Principles
-
-### 1. Security-First Documentation
-- **Secret Management**: All secrets managed via 1Password with references
-- **Stateful Variables**: Environment-specific values clearly marked and templated
-- **Progressive Exposure**: Private GitLab → Clean GitHub workflow
-
-### 2. Ownership & Control
-- **Data Portability**: All documentation in standard formats (Markdown, YAML, etc.)
-- **Self-Hosted Primary**: BookStack/Outline/MkDocs for internal reference
-- **Version Control**: Git for all changes and history
-- **Emergency Access**: Direct file access always possible
-
-### 3. Professional Presentation
-- **Clean Documentation**: Well-formatted, searchable, navigable
-- **Consistent Templates**: Standardized structure across all docs
-- **Visual Appeal**: Professional appearance for reference and sharing
-
-## Implementation Phases
-
-### Phase 1: Private GitLab Setup (Priority)
-**Purpose**: Safe experimentation and learning environment
-
-**GitLab Installation**:
+### Step 1: Create GitHub Repository
 ```bash
-# Proxmox LXC container for GitLab
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/gitlab.sh)"
+# On your local machine or Proxmox host
+mkdir ~/homelab-infrastructure
+cd ~/homelab-infrastructure
+
+# Initialize git
+git init
+
+# Create directory structure
+mkdir -p {documentation/{infrastructure/{dns,proxmox,networking},services,procedures,templates},configs/{templates,examples},scripts}
+
+# Create README
+cat > README.md << 'EOF'
+# Homelab Infrastructure Documentation
+
+Comprehensive documentation for homelab infrastructure, focusing on DNS services, Proxmox virtualization, and service deployment.
+
+## Repository Structure
+- `documentation/` - All infrastructure documentation
+- `configs/templates/` - Configuration templates and examples  
+- `scripts/` - Automation and utility scripts
+
+## Getting Started
+- [Documentation Strategy](documentation/homelab-documentation-strategy.md)
+- [Technitium DNS Dark Mode](documentation/infrastructure/dns/2025-09-05-technitium-dns-dark-mode-implementation.md)
+
+## Current Focus
+Building out encrypted DNS infrastructure with Technitium DNS Server, including:
+- Dark mode interface implementation
+- DNS-over-HTTPS configuration
+- High availability setup across multiple nodes
+- Ad blocking and split-horizon DNS
+
+## Contributing
+This repository follows security-first documentation practices with templated configurations for sensitive data.
+EOF
 ```
 
-**Repository Structure**:
-```
-homelab-infrastructure/
-├── documentation/
-│   ├── infrastructure/
-│   │   ├── proxmox/
-│   │   ├── networking/
-│   │   └── dns/
-│   ├── services/
-│   ├── procedures/
-│   └── templates/
-├── configs/
-│   ├── raw/           # Actual configs with secrets
-│   └── templates/     # Sanitized templates
-├── scripts/
-└── infrastructure-as-code/
-    ├── terraform/
-    ├── ansible/
-    └── docker-compose/
-```
+### Step 2: Add Your Documentation Files
+```bash
+# Copy the sanitized documentation
+cp /path/to/homelab_docs_strategy.md documentation/homelab-documentation-strategy.md
+cp /path/to/technitium_sanitized_template.md documentation/infrastructure/dns/2025-09-05-technitium-dns-dark-mode-implementation.md
 
-### Phase 2: Documentation Website
-**Technology Options** (in order of recommendation):
+# Create the CSS template
+mkdir -p configs/templates/technitium
+cp /path/to/technitium_css_final.css configs/templates/technitium/main-dark.css
 
-1. **MkDocs Material** 
-   - Pros: Beautiful, fast, great search, Git-based
-   - Cons: Python dependency
-   
-2. **BookStack**
-   - Pros: User-friendly, hierarchical, good permissions
-   - Cons: Database dependency, less portable
-   
-3. **Outline**
-   - Pros: Modern interface, collaborative
-   - Cons: More complex setup, Node.js
+# Create project roadmap
+cat > documentation/PROJECT_ROADMAP.md << 'EOF'
+# Homelab Infrastructure Roadmap
 
-**Recommended**: Start with MkDocs Material for maximum portability
+## Current Phase: DNS Infrastructure Foundation
 
-### Phase 3: Public GitHub Integration
-**Workflow**:
-1. Develop and experiment in private GitLab
-2. Sanitize and template sensitive information
-3. Push clean versions to public GitHub
-4. Maintain templates for community contribution
+### Completed
+- [x] Technitium DNS dark mode implementation
+- [x] Documentation strategy and repository structure
+- [x] Security review process for third-party code
 
-## Template System Design
+### Next 30 Days
+- [ ] Set up MkDocs documentation website
+- [ ] Configure Technitium for DNS-over-HTTPS
+- [ ] Implement popular ad blocking lists
+- [ ] Document DNS zone configurations
 
-### Secret Management Pattern
+### Medium Term (3-6 Months)  
+- [ ] Deploy high availability DNS (3-5 instances)
+- [ ] Implement infrastructure as code (Terraform/Ansible)
+- [ ] Set up monitoring and alerting
+- [ ] Create disaster recovery procedures
 
-#### For 1Password Integration:
-```yaml
-# Example service config
-database:
-  host: "{{ POSTGRES_HOST }}"           # Stateful, non-secret
-  port: 5432                            # Standard, non-secret  
-  username: "op://vault/item/username"  # 1Password reference
-  password: "op://vault/item/password"  # 1Password reference
+### Long Term Vision
+- [ ] Complete DNS infrastructure with DNSSEC
+- [ ] Full homelab service inventory and documentation
+- [ ] Automated deployment and backup systems
+- [ ] Community contribution templates
+
+## Working with Future Assistance
+Reference this roadmap and the documentation strategy when continuing this project.
+EOF
 ```
 
-#### For Manual Replacement:
-```yaml
-# Example service config  
-database:
-  host: "__POSTGRES_HOST__"       # Replace with actual host
-  port: 5432                      # Standard port
-  username: "__DB_USERNAME__"     # Replace with actual username
-  password: "__DB_PASSWORD__"     # Replace with actual password
-```
+### Step 3: Create Helper Scripts
+```bash
+# Documentation template generator
+cat > scripts/create-doc-template.sh << 'EOF'
+#!/bin/bash
+# Create new documentation from template
 
-### Documentation Template Structure
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 <service-name>"
+    echo "Example: $0 nextcloud"
+    exit 1
+fi
 
-Each major implementation should follow this structure:
+SERVICE_NAME=$1
+DATE=$(date +%Y-%m-%d)
+FILENAME="documentation/services/${DATE}-${SERVICE_NAME}-implementation.md"
 
-```markdown
-# [Service/Implementation Name]
+cat > "$FILENAME" << TEMPLATE
+# ${SERVICE_NAME^} Implementation
 
 ## Quick Reference
-- **Status**: [Active/Testing/Deprecated]
-- **Dependencies**: [List dependencies]
-- **Secrets Required**: [1Password vault references]
-- **Stateful Variables**: [Environment-specific values]
+- **Status**: [Planning/Testing/Active/Deprecated]
+- **Dependencies**: []
+- **Secrets Required**: []
+- **Stateful Variables**: []
 
 ## Overview
-[What was implemented and why]
+[What is being implemented and why]
 
 ## Environment Details
-- **Platform**: {{ PLATFORM_TYPE }}
-- **Host**: {{ HOST_IDENTIFIER }}
-- **Version**: [Specific version]
+- **Platform**: __PLATFORM__
+- **Host**: __HOST_IP__:__PORT__
+- **Version**: [specific version]
 
 ## Security Analysis
-[Security review of any third-party code]
+[Security review of any third-party components]
 
-## Implementation
-[Step-by-step with templated values]
+## Implementation Process
+[Step-by-step implementation]
 
 ## Configuration Files
-[Links to templates in /configs/templates/]
+[Links to template files in configs/templates/]
 
 ## Troubleshooting
 [Common issues and solutions]
@@ -138,139 +135,240 @@ Each major implementation should follow this structure:
 [How to undo changes]
 
 ## Maintenance
-[Ongoing care requirements]
+[Ongoing maintenance requirements]
+
+## Change Log
+| Date | Version | Author | Changes |
+|------|---------|--------|---------|
+| ${DATE} | 1.0 | Homelab Admin | Initial implementation |
+TEMPLATE
+
+echo "Created template: $FILENAME"
+echo "Edit the file and commit when ready"
+EOF
+
+chmod +x scripts/create-doc-template.sh
+
+# Variable replacement helper
+cat > scripts/prepare-for-deployment.sh << 'EOF'
+#!/bin/bash
+# Helper script for replacing template variables
+
+echo "=== Template Variable Replacement Helper ==="
+echo "This script helps identify variables that need replacement before deployment"
+echo ""
+
+if [ $# -eq 0 ]; then
+    echo "Usage: $0 <template-file>"
+    echo "Example: $0 configs/templates/technitium/main-dark.css"
+    exit 1
+fi
+
+TEMPLATE_FILE=$1
+
+if [ ! -f "$TEMPLATE_FILE" ]; then
+    echo "Error: File $TEMPLATE_FILE not found"
+    exit 1
+fi
+
+echo "Variables found in $TEMPLATE_FILE:"
+grep -o '__[A-Z_]*__' "$TEMPLATE_FILE" | sort | uniq
+
+echo ""
+echo "op:// references found:"
+grep -o 'op://[^"]*' "$TEMPLATE_FILE" | sort | uniq
+
+echo ""
+echo "Remember to replace these before deployment!"
+EOF
+
+chmod +x scripts/prepare-for-deployment.sh
 ```
 
-## File Naming Convention
-
-```
-YYYY-MM-DD-descriptive-name-with-dashes.md
-2025-09-05-technitium-dns-dark-mode-implementation.md
-```
-
-## GitLab Workflow
-
-### Initial Setup Commands
+### Step 4: Initial Commit and Push to GitHub
 ```bash
-# Clone private repo (after GitLab setup)
-git clone https://gitlab.yourdomain.com/homelab/infrastructure.git
-cd infrastructure
-
-# Create branch for new work
-git checkout -b feature/new-implementation
-
-# Work and commit frequently
+# Add all files
 git add .
-git commit -m "WIP: implementing feature"
-git push origin feature/new-implementation
 
-# Merge to main when ready
-git checkout main
-git merge feature/new-implementation
-git push origin main
+# Initial commit
+git commit -m "Initial homelab infrastructure documentation
+
+- Add comprehensive documentation strategy
+- Include Technitium DNS dark mode implementation
+- Create template system for future services
+- Establish security-first documentation practices
+- Add helper scripts for template management
+
+Ready for public sharing - all sensitive data templated"
+
+# Create GitHub repository (do this on GitHub.com)
+# Then connect and push:
+git branch -M main
+git remote add origin https://github.com/YOUR_USERNAME/homelab-infrastructure.git
+git push -u origin main
 ```
 
-### Sanitization Process for GitHub
+## Phase 2: Documentation Website Setup
+
+### Step 1: Deploy MkDocs Container
 ```bash
-# Create sanitized branch
-git checkout -b sanitized-for-github
+# Check if there's a community script for MkDocs or similar
+# If not, create a simple container:
 
-# Run sanitization script (to be created)
-./scripts/sanitize-for-public.sh
+# Create Ubuntu LXC container, then:
+sudo apt update && sudo apt install -y python3-pip
+pip3 install mkdocs-material mkdocs-git-revision-date-localized-plugin
 
-# Review changes
-git diff main
+# In your repo directory:
+cd ~/homelab-infrastructure
 
-# Push to GitHub remote
-git remote add github https://github.com/yourusername/homelab-public.git
-git push github sanitized-for-github:main
+# Create MkDocs config
+cat > mkdocs.yml << 'EOF'
+site_name: Homelab Infrastructure Documentation
+site_description: Comprehensive homelab infrastructure and services documentation
+site_url: http://YOUR_DOCS_IP:8000
+
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: blue
+      accent: light blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    - scheme: default
+      primary: blue
+      accent: light blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - search.highlight
+    - content.code.copy
+
+plugins:
+  - search
+  - git-revision-date-localized:
+      type: date
+
+nav:
+  - Home: index.md
+  - Strategy: documentation/homelab-documentation-strategy.md
+  - Roadmap: documentation/PROJECT_ROADMAP.md
+  - Infrastructure:
+      - DNS: 
+          - Technitium Dark Mode: documentation/infrastructure/dns/2025-09-05-technitium-dns-dark-mode-implementation.md
+      - Proxmox: documentation/infrastructure/proxmox/
+      - Networking: documentation/infrastructure/networking/
+  - Services: documentation/services/
+  - Templates: configs/templates/
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - codehilite:
+      guess_lang: false
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - toc:
+      permalink: true
+EOF
+
+# Create index page
+cat > index.md << 'EOF'
+# Homelab Infrastructure Documentation
+
+Welcome to the comprehensive documentation for homelab infrastructure and services.
+
+## Current Focus: DNS Infrastructure
+
+Building a robust, encrypted DNS infrastructure using Technitium DNS Server with:
+
+- ✅ **Dark Mode Interface** - Eye-friendly administration interface
+- 🔄 **DNS-over-HTTPS** - Encrypted DNS queries
+- 🔄 **High Availability** - Multiple instances across nodes  
+- 🔄 **Ad Blocking** - Popular block lists integration
+- 🔄 **Split Horizon** - Internal vs external DNS resolution
+
+## Quick Links
+
+- [Documentation Strategy](documentation/homelab-documentation-strategy.md) - How this documentation works
+- [Project Roadmap](documentation/PROJECT_ROADMAP.md) - Current and future plans
+- [Technitium Dark Mode](documentation/infrastructure/dns/2025-09-05-technitium-dns-dark-mode-implementation.md) - Recent implementation
+
+## Repository Structure
+
+```
+homelab-infrastructure/
+├── documentation/          # All documentation files
+│   ├── infrastructure/    # Core infrastructure (DNS, Proxmox, etc.)
+│   ├── services/         # Application and service docs
+│   └── procedures/       # Operational procedures
+├── configs/
+│   ├── templates/        # Configuration templates
+│   └── examples/         # Example configurations
+└── scripts/              # Automation and helper scripts
 ```
 
-## Variable Replacement Guide
+## Security & Best Practices
 
-### Secret Categories
-
-#### 1. Authentication Secrets
-**Examples**: passwords, API keys, certificates
-**Format**: `op://vault/item/field` or `__SECRET_NAME__`
-
-#### 2. Network Information
-**Examples**: 
-- Public IPs: **SECRET** - Use `__PUBLIC_IP__`
-- Private IPs: **NOT SECRET** - Can include in public docs
-- Domain names: **DEPENDS** - Personal domains are secrets
-
-#### 3. System Identifiers
-**Examples**:
-- Hostnames: **SECRET** - Use `__HOSTNAME__`
-- Container IDs: **NOT SECRET** - Generic examples OK
-- Service ports: **NOT SECRET** - Standard ports OK
-
-### Replacement Checklist
-
-Before committing to GitLab (even private):
-- [ ] Review for any personal domain names
-- [ ] Check for any external IP addresses
-- [ ] Verify no passwords or keys in plain text
-- [ ] Confirm no personal identifying information
-
-Before pushing to GitHub:
-- [ ] Replace all templated variables
-- [ ] Remove any specific hostnames
-- [ ] Ensure all secrets use template format
-- [ ] Test that documentation makes sense for general audience
-
-## Self-Hosted Documentation Setup
-
-### MkDocs Material Installation
-```bash
-# In Proxmox LXC or dedicated container
-pip install mkdocs-material
-pip install mkdocs-git-revision-date-localized-plugin
-
-# Create docs structure
-mkdocs new homelab-docs
-cd homelab-docs
-
-# Configure mkdocs.yml with Material theme
-# Add Git integration for auto-updates from GitLab
-```
-
-### BookStack Alternative
-```bash
-# If preferring BookStack
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/ct/bookstack.sh)"
-```
-
-## Next Steps
-
-1. **Set up private GitLab instance**
-2. **Create initial repository with this documentation**
-3. **Implement Technitium documentation as first real example**
-4. **Set up documentation website (MkDocs recommended)**
-5. **Develop sanitization scripts for public publishing**
-6. **Create templates for common infrastructure patterns**
-
-## Tools for Future Development
-
-### Secret Management
-- **1Password CLI**: For automated secret injection
-- **SOPS**: For encrypted secrets in Git
-- **Ansible Vault**: For infrastructure automation secrets
-
-### Documentation Generation
-- **Terraform Docs**: Auto-generate infrastructure documentation
-- **Ansible Docs**: Generate playbook documentation
-- **Draw.io**: For network diagrams (can be stored as code)
-
-## Success Metrics
-
-- **Security**: No secrets ever committed to public repositories
-- **Usability**: Can deploy from documentation alone
-- **Maintainability**: Updates don't break existing documentation
-- **Portability**: Can export all data in standard formats
-- **Collaboration**: Others can contribute using public templates
+This documentation follows security-first practices:
+- All sensitive data is templated with variables
+- Third-party code undergoes security review
+- Public repository safe for community sharing
+- Template system for easy deployment
 
 ---
 
-*This strategy evolves with homelab growth and infrastructure maturity*
+*Documentation updated automatically from Git repository*
+EOF
+
+# Start the development server
+mkdocs serve --dev-addr 0.0.0.0:8000 &
+
+echo "Documentation server running at http://YOUR_IP:8000"
+```
+
+## Phase 3: Continue DNS Infrastructure Development
+
+### Next Implementation: DNS-over-HTTPS
+With your documentation system now in place, proceed with:
+
+1. **Research DNS-over-HTTPS setup** for Technitium
+2. **Document the implementation** using your new template system
+3. **Commit changes** to your GitHub repository
+4. **Update MkDocs site** automatically
+
+### Template for Next Documentation
+```bash
+# Use your new helper script:
+./scripts/create-doc-template.sh technitium-dns-over-https
+
+# This creates a new file following your established format
+```
+
+## Why This Approach Works
+
+1. **Immediate Public Sharing** - Your documentation is already sanitized and ready
+2. **Professional Presentation** - MkDocs gives you a beautiful documentation site
+3. **Version Control** - Full Git history of all changes
+4. **Scalable** - Easy to add new services and documentation
+5. **Secure** - Template system prevents accidental secret exposure
+
+## Success Verification
+
+After setup, you should have:
+- ✅ Public GitHub repository with professional documentation
+- ✅ Self-hosted documentation website (MkDocs)
+- ✅ Template system for future implementations
+- ✅ Helper scripts for efficient documentation
+- ✅ Clear roadmap for DNS infrastructure development
+
+This foundation supports your entire DNS infrastructure project and scales to whatever services you add next.
