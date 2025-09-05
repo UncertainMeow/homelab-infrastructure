@@ -1,0 +1,22 @@
+global:
+  scrape_interval: 30s
+  evaluation_interval: 30s
+
+scrape_configs:
+  - job_name: 'technitium-dns'
+    static_configs:
+      - targets: ['localhost:5380']
+    metrics_path: '/api/dashboard/stats/get'
+    params:
+      token: ['__TECHNITIUM_API_TOKEN__']
+    scrape_interval: 60s
+
+  - job_name: 'dns-health'
+    static_configs:
+      - targets: ['localhost:5380']
+    metrics_path: '/api/dashboard/stats/getTop'
+    params:
+      token: ['__TECHNITIUM_API_TOKEN__']
+      type: ['topClients']
+      statsType: ['LastHour']
+    scrape_interval: 300s

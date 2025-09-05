@@ -1,0 +1,55 @@
+{
+  "version": "1.0",
+  "serverDomain": "dns-primary.doofus.co",
+  "webServiceHttpPort": 5380,
+  "webServiceEnableHttps": true,
+  "webServiceHttpsPort": 53443,
+  "webServiceUseSelfSignedTlsCertificate": false,
+  "dnsServerLocalEndPoints": ["0.0.0.0:53", "[::]:53"],
+  "dnsServerIPv4SourceAddress": "0.0.0.0",
+  "dnsServerIPv6SourceAddress": "::",
+  "defaultRecordTtl": 3600,
+  "useSoaSerialDateScheme": true,
+  "dnssecValidation": true,
+  "eDnsClientSubnet": true,
+  "dnsOverHttpPort": 80,
+  "dnsOverTlsPort": 853,
+  "dnsOverHttpsPort": 443,
+  "dnsOverQuicPort": 853,
+  "enableLogging": true,
+  "logQueries": true,
+  "useLocalTime": true,
+  "maxLogFileDays": 30,
+  "enableRecursion": true,
+  "recursionTimeout": 5000,
+  "recursionRetries": 3,
+  "randomizeName": false,
+  "cacheMaximumRecords": 10000,
+  "cacheMinimumRecordTtl": 10,
+  "cacheMaximumRecordTtl": 86400,
+  "cacheNegativeRecordTtl": 300,
+  "cachePrefetchTrigger": 2,
+  "cachePreloadGlobalForwarders": true,
+  "forwarders": [
+    {
+      "name": "Cloudflare",
+      "url": "https://cloudflare-dns.com/dns-query",
+      "protocol": "Https"
+    },
+    {
+      "name": "Quad9",
+      "url": "https://dns.quad9.net/dns-query", 
+      "protocol": "Https"
+    }
+  ],
+  "blockListUrls": [
+    "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts",
+    "https://someonewhocares.org/hosts/zero/hosts",
+    "https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/BaseFilter/sections/adservers.txt",
+    "https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext"
+  ],
+  "allowRecursionOnlyForPrivateNetworks": false,
+  "randomizeNameFailureCache": false,
+  "serveStale": true,
+  "serveStaleTtl": 259200
+}

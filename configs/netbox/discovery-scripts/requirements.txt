@@ -1,0 +1,8 @@
+requests>=2.31.0
+pynetbox>=7.3.0
+python-nmap>=0.7.1
+dnspython>=2.4.0
+ipaddress>=1.0.23
+netaddr>=0.10.1
+schedule>=1.2.0
+psutil>=5.9.0
