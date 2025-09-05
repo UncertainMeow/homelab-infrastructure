@@ -1,0 +1,340 @@
+/* 
+ * Technitium DNS Server - Dark Mode CSS
+ * Version: 1.1 - Fixed Layout Issues
+ * Compatible with: Technitium DNS Server (all versions)
+ * Author: Homelab Infrastructure Team
+ * 
+ * SECURITY REVIEWED: Pure CSS, no executable code, completely reversible
+ * 
+ * Installation:
+ * 1. Place this file at: /opt/technitium/dns/www/css/main-dark.css
+ * 2. Add to index.html: <link href="css/main-dark.css" rel="stylesheet">
+ * 3. Restart technitium.service
+ */
+
+/* === ROOT VARIABLES === */
+:root {
+  --dark-bg-primary: #181a1b;     /* Main page background */
+  --dark-bg-secondary: #23272a;   /* Content containers */
+  --dark-bg-tertiary: #2d323a;    /* Form elements, hover states */
+  --dark-bg-header: #222c3c;      /* Header and navigation */
+  --dark-text-primary: #e0e0e0;   /* Primary text color */
+  --dark-text-secondary: #b0b0b0; /* Secondary/muted text */
+  --dark-text-white: #ffffff;     /* High contrast text */
+  --dark-border: #444;            /* Border color */
+  --dark-shadow: #111a22;         /* Shadow effects */
+  --link-color: #60aaff;          /* Link color */
+  --link-hover: #a5d6ff;          /* Link hover color */
+  --accent-blue: #3b82f6;         /* Primary buttons */
+  --accent-warning: #f59e42;      /* Warning elements */
+  --accent-danger: #ef4444;       /* Danger/error elements */
+  --accent-success: #10b981;      /* Success elements */
+}
+
+/* === BASE ELEMENTS === */
+html, body {
+  background: var(--dark-bg-primary) !important;
+  color: var(--dark-text-primary) !important;
+}
+
+/* === LINKS === */
+a {
+  color: var(--link-color) !important;
+}
+
+a:hover, a:focus {
+  color: var(--link-hover) !important;
+}
+
+th a {
+  color: var(--dark-text-primary) !important;
+}
+
+th a:hover {
+  color: var(--dark-text-primary) !important;
+  text-decoration: none !important;
+}
+
+/* === HEADER === */
+#header {
+  background-color: var(--dark-bg-header) !important;
+  box-shadow: 0px 1px 15px 0px var(--dark-shadow) !important;
+}
+
+#header .title {
+  color: var(--dark-text-white) !important;
+}
+
+#header .title .text {
+  color: var(--dark-text-white) !important;
+}
+
+#header .menu .menu-title {
+  color: var(--dark-text-primary) !important;
+}
+
+/* === MAIN CONTENT === */
+#content {
+  background: var(--dark-bg-secondary) !important;
+}
+
+.container {
+  background: var(--dark-bg-secondary) !important;
+  color: var(--dark-text-primary) !important;
+}
+
+/* === FOOTER === */
+#footer {
+  background-color: var(--dark-bg-secondary) !important;
+  box-shadow: 0px 2px 15px 1px var(--dark-shadow) !important;
+}
+
+#footer .content {
+  color: var(--dark-text-secondary) !important;
+}
+
+#footer .content a {
+  color: var(--link-color) !important;
+}
+
+#footer .content a:hover {
+  color: var(--link-hover) !important;
+}
+
+/* === FORMS === */
+.form-control,
+input, textarea, select {
+  background-color: var(--dark-bg-tertiary) !important;
+  color: var(--dark-text-primary) !important;
+  border: 1px solid var(--dark-border) !important;
+}
+
+.form-control:focus,
+input:focus, textarea:focus, select:focus {
+  background-color: var(--dark-bg-tertiary) !important;
+  color: var(--dark-text-primary) !important;
+  border-color: var(--accent-blue) !important;
+  box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25) !important;
+}
+
+/* === NAVIGATION PANES === */
+.zone-list-pane, .log-list-pane {
+  background: var(--dark-bg-secondary) !important;
+}
+
+.zones {
+  color: var(--dark-text-primary) !important;
+}
+
+.zone-viewer-pane {
+  background: var(--dark-bg-secondary) !important;
+}
+
+.logs {
+  color: var(--dark-text-primary) !important;
+}
+
+.log-viewer-pane {
+  background: var(--dark-bg-secondary) !important;
+}
+
+/* === TABLES === */
+.table, .table-hover {
+  background-color: var(--dark-bg-secondary) !important;
+  color: var(--dark-text-primary) !important;
+}
+
+.table-hover > tbody > tr:hover,
+.query-logs tr:hover {
+  background-color: var(--dark-bg-tertiary) !important;
+}
+
+.table th, .table td {
+  border-color: var(--dark-border) !important;
+  color: var(--dark-text-primary) !important;
+}
+
+/* === PANELS === */
+.panel, .panel-default, .panel-body, .panel-heading, .well {
+  background-color: var(--dark-bg-secondary) !important;
+  color: var(--dark-text-primary) !important;
+  border-color: var(--dark-border) !important;
+}
+
+/* === BUTTONS === */
+.btn, .btn-default {
+  background-color: var(--dark-bg-tertiary) !important;
+  color: var(--dark-text-primary) !important;
+  border-color: var(--dark-border) !important;
+}
+
+.btn:hover, .btn-default:hover {
+  background-color: var(--dark-border) !important;
+}
+
+.btn-primary {
+  background-color: var(--accent-blue) !important;
+  color: var(--dark-text-white) !important;
+}
+
+.btn-primary:hover {
+  background-color: #2563eb !important;
+}
+
+.btn-warning {
+  background-color: var(--accent-warning) !important;
+  color: var(--dark-bg-primary) !important;
+}
+
+.btn-danger {
+  background-color: var(--accent-danger) !important;
+  color: var(--dark-text-white) !important;
+}
+
+.btn-success {
+  background-color: var(--accent-success) !important;
+  color: var(--dark-text-white) !important;
+}
+
+/* === DROPDOWNS === */
+.dropdown-menu {
+  background-color: var(--dark-bg-tertiary) !important;
+  color: var(--dark-text-primary) !important;
+  border-color: var(--dark-border) !important;
+}
+
+.dropdown-menu > li > a {
+  color: var(--dark-text-primary) !important;
+}
+
+.dropdown-menu > li > a:hover {
+  background-color: var(--dark-bg-header) !important;
+  color: var(--dark-text-white) !important;
+}
+
+/* === STATISTICS PANELS === */
+.stats-panel .total-queries {
+  background-color: rgba(80, 120, 200, 0.8) !important;
+  color: var(--dark-text-white) !important;
+}
+
+.stats-panel .no-error {
+  background-color: rgba(16, 185, 129, 0.8) !important;
+  color: var(--dark-text-white) !important;
+}
+
+.stats-panel .server-failure {
+  background-color: rgba(239, 68, 68, 0.8) !important;
+  color: var(--dark-text-white) !important;
+}
+
+.stats-panel .nxdomain {
+  background-color: rgba(107, 114, 128, 0.8) !important;
+  color: var(--dark-text-white) !important;
+}
+
+.stats-panel .refused {
+  background-color: rgba(59, 130, 246, 0.8) !important;
+  color: var(--dark-text-white) !important;
+}
+
+.stats-panel .auth-hit {
+  background-color: rgba(245, 158, 11, 0.8) !important;
+  color: var(--dark-bg-primary) !important;
+}
+
+.stats-panel .cache-hit {
+  background-color: rgba(139, 92, 246, 0.8) !important;
+  color: var(--dark-text-white) !important;
+}
+
+.stats-panel .blocked {
+  background-color: rgba(245, 158, 66, 0.8) !important;
+  color: var(--dark-bg-primary) !important;
+}
+
+.stats-panel .dropped {
+  background-color: rgba(75, 85, 99, 0.8) !important;
+  color: var(--dark-text-white) !important;
+}
+
+.stats-panel .recursions {
+  background-color: rgba(6, 182, 212, 0.8) !important;
+  color: var(--dark-text-white) !important;
+}
+
+.stats-panel .clients {
+  background-color: rgba(99, 102, 241, 0.8) !important;
+  color: var(--dark-text-white) !important;
+}
+
+/* === NAVIGATION TABS === */
+.nav-tabs > li > a {
+  color: var(--dark-text-primary) !important;
+  background-color: var(--dark-bg-tertiary) !important;
+  border-color: var(--dark-border) !important;
+}
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  color: var(--dark-text-white) !important;
+  background-color: var(--dark-bg-secondary) !important;
+  border-color: var(--dark-border) !important;
+}
+
+.nav-tabs > li > a:hover {
+  background-color: var(--dark-bg-header) !important;
+  border-color: var(--dark-border) !important;
+}
+
+/* === INLINE STYLE OVERRIDES === */
+[style*="background-color: white"], [style*="background: white"] {
+  background-color: var(--dark-bg-secondary) !important;
+  color: var(--dark-text-primary) !important;
+}
+
+[style*="color: black"] {
+  color: var(--dark-text-primary) !important;
+}
+
+/* === ICONS AND TEXT ELEMENTS === */
+.caret, .glyphicon {
+  color: var(--dark-text-primary) !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--dark-text-primary) !important;
+}
+
+.text-muted {
+  color: var(--dark-text-secondary) !important;
+}
+
+label {
+  color: var(--dark-text-primary) !important;
+}
+
+/* === MODALS === */
+.modal-content {
+  background-color: var(--dark-bg-secondary) !important;
+  color: var(--dark-text-primary) !important;
+}
+
+.modal-header {
+  background-color: var(--dark-bg-header) !important;
+  border-bottom-color: var(--dark-border) !important;
+}
+
+.modal-footer {
+  border-top-color: var(--dark-border) !important;
+}
+
+/* 
+ * END OF DARK MODE CSS
+ * 
+ * To customize colors, modify the CSS variables at the top of this file.
+ * No service restart required for CSS changes - just refresh your browser.
+ * 
+ * For support: https://github.com/yourusername/homelab-infrastructure
+ */
